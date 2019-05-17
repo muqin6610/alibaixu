@@ -5,6 +5,7 @@ const express = require('express');
 const ejs = require('ejs');
 const bodyParser = require('body-parser');
 const usersRouter = require('./router/usersRouter.js');
+const categoryRouter = require('./router/categoryRouter.js');
 
 const app = express();
 
@@ -23,6 +24,7 @@ app.use('/static/uploads',express.static('./uploads'));
 
 //注册中间件
 app.use(usersRouter);
+app.use(categoryRouter);
 
 
 app.listen(3000,() => {

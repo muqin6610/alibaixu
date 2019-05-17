@@ -78,5 +78,20 @@ module.exports = {
                 msg: '修改成功'
             });
         });
+    },
+    //批量删除用户
+    delUsersByIds:(req,res) => {
+        //获取参数id
+        let ids = req.body.id;
+        //将数组转为字符串,用逗号隔开
+        let idStr = ids.join(',');
+        //执行sql语句
+        let delSql = `DELETE FROM users WHERE id in (${idStr})`;
+        userdb.query(delSql,result => {
+            res.send({
+                status:200,
+                msg:'删除成功!'
+            });
+        });
     }
 };
