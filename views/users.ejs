@@ -180,6 +180,9 @@
           getAllUsers();
           //清空输入框
           document.getElementById("form").reset();
+        } else if (status === 304) {
+          alert(msg);
+          window.location = '/login';
         } else {
           alert(msg);
         };
@@ -198,6 +201,9 @@
           //重新渲染页面
           let trHtml = template('tmp', res);
           $('#tbody').html(trHtml);
+        } else if (status === 304) {
+          alert(msg);
+          window.location = '/login';
         } else {
           alert('出错了!')
         };
@@ -219,6 +225,9 @@
             alert(msg);
             //更新数据
             getAllUsers();
+          } else if (status === 304) {
+            alert(msg);
+            window.location = '/login';
           } else {
             alert('出错了!')
           };
@@ -243,7 +252,10 @@
           //将新增用户区域改为修改用户区域
           let html = template('editUser', data);
           $('#form').html(html);
-        };
+        } else if (status === 304) {
+          alert(msg);
+          window.location = '/login';
+        }
       }
     });
   });
@@ -268,6 +280,9 @@
           //重新渲染新增区
           let html = template('addUser', {});
           $('#form').html(html);
+        } else if (status === 304) {
+          alert(msg);
+          window.location = '/login';
         } else {
           alert('出错了!');
         };
@@ -320,6 +335,9 @@
             getAllUsers();
             //隐藏批量删除按钮
             $('#delAll').hide();
+          } else if (status === 304) {
+            alert(msg);
+            window.location = '/login';
           } else {
             alert('出错了!');
           };
