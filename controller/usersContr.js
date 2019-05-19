@@ -18,6 +18,7 @@ module.exports = {
         let params = req.body;
         //将数据提交到数据库
         let addSql = `INSERT INTO users (slug, email, password, nickname, status) VALUES ('${params.slug}','${params.email}','${params.password}','${params.nickname}','activated')`
+        
         //执行sql语句
         userdb.query(addSql, reuslt => {
             res.send({
@@ -83,10 +84,14 @@ module.exports = {
     delUsersByIds:(req,res) => {
         //获取参数id
         let ids = req.body.id;
-        //将数组转为字符串,用逗号隔开
-        let idStr = ids.join(',');
-        //执行sql语句
-        let delSql = `DELETE FROM users WHERE id in (${idStr})`;
+        
+        // 将数组转为字符串,用逗号隔开
+        // let idStr = ids.join(','); 
+             
+        // 执行sql语句
+        let delSql = `DELETE FROM users WHERE id in (${ids})`;
+        console.log(delSql );
+        
         userdb.query(delSql,result => {
             res.send({
                 status:200,

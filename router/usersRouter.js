@@ -5,6 +5,16 @@ const express = require('express');
 const userContr = require('../controller/usersContr.js');
 const router = express.Router();
 
+//登录验证中间件
+router.use((req,res,next) => {
+    //验证是否登录
+    if(req.session.user){
+        next();
+    }else {
+        res.send('<script>alert("您还没有登录");window.location="/login";</script>')
+    }
+});
+
 //获取静态页面
 router.get('/users',userContr.getUsers)
 //添加用户的路由

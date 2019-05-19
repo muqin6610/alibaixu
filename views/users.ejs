@@ -59,7 +59,8 @@
             <tbody id="tbody">
               <% for(var i = 0; i < result.length; i ++) { %>
               <tr>
-                <td class="text-center"><input class="boxitem" type="checkbox"></td>
+                <td class="text-center"><input class="boxitem" name="id" value="<%= result[i].id%>" type="checkbox">
+                </td>
                 <td class="text-center"><img class="avatar"
                     src="<%= result[i].avatar?result[i].avatar:'/assets/img/default.png' %>"></td>
                 <td>
@@ -92,7 +93,7 @@
 <script id="tmp" type="text/html">
         {{ each data }}
         <tr>
-          <td class="text-center"><input class="boxitem" type="checkbox"></td>
+          <td class="text-center"><input class="boxitem" name="id" value="{{$value.id}}"  type="checkbox"></td>
           <td class="text-center"><img class="avatar" src="{{$value.avatar?$value.avatar: '/assets/img/default.png'}}"></td>
           <td>
             {{$value.email}}
@@ -178,9 +179,9 @@
           //重新渲染数据
           getAllUsers();
           //清空输入框
-          $('#form').reset();
+          document.getElementById("form").reset();
         } else {
-          alert(res);
+          alert(msg);
         };
       },
     });
@@ -233,7 +234,7 @@
     let id = $(this).attr('id');
     //根据id获取服务器对应的数据
     $.ajax({
-      url: 'getUserById',
+      url: '/getUserById',
       type: 'GET',
       data: 'id=' + id,
       success: function (res) {
@@ -294,7 +295,7 @@
         selCount++;
       };
     });
-    selCount >= 2 ? $('#delAll').show(200) : $('#delAll').hide(200);
+    selCount >= 2 ? $('#delAll').show() : $('#delAll').hide();
     //如果所有的选择框被选中,表头中的选框也要被选中
     let totalCount = $('.boxitem').length;
     //如果所有选框的数据与选中的是相同的,则 表头的选框也要被选中
@@ -303,23 +304,27 @@
 
   //给批量删除注册一个绑定事件
   $('#delAll').click(function () {
-    //获取选择的多选框的id
-    let params = $('#tableForm').serialize();
-    //将得到的id提交到服务器
-    $.ajax({
-      url:'/delUsersByIds',
-      type:'POST',
-      data:params,
-      success:function(res){
-        let {status,msg} = res;
-        if(status === 200){
-          alert(msg);
-          //重新渲染
-          getAllUsers();
-        }else {
-          alert('出错了!');
-        };
-      }
-    });
+    if (confirm('您确定要删除吗?')) {
+      //获取选择的多选框的id
+      let params = $('#tableForm').serialize();
+      //将得到的id提交到服务器
+      $.ajax({
+        url: '/delUsersByIds',
+        type: 'POST',
+        data: params,
+        success: function (res) {
+          let { status, msg } = res;
+          if (status === 200) {
+            alert(msg);
+            //重新渲染
+            getAllUsers();
+            //隐藏批量删除按钮
+            $('#delAll').hide();
+          } else {
+            alert('出错了!');
+          };
+        }
+      });
+    }
   });
 </script>
