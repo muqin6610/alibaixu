@@ -1,11 +1,13 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
+
 <head>
   <meta charset="utf-8">
   <title>Sign in &laquo; Admin</title>
   <link rel="stylesheet" href="../assets/vendors/bootstrap/css/bootstrap.css">
   <link rel="stylesheet" href="../assets/css/admin.css">
 </head>
+
 <body>
   <div class="login">
     <form id="form" class="login-wrap">
@@ -22,41 +24,75 @@
         <label for="password" class="sr-only">密码</label>
         <input id="password" name="password" type="password" class="form-control" placeholder="密码">
       </div>
+      <div class="js5-input-div">
+        <span class="js5-input-divSpan">验证码：</span>
+        <input type="text" placeholder="不区分大小写" class="js5-form3-input" id="js5-form3-input" ng-model="writeCode"
+          maxlength="6" ng-keyup="mykey($event)">
+        <input type="text" class="js5-authCode" value="" id="js5-authCode" ng-model="showAuthCode" disabled="disabled" oncopy='return false' oncontextmenu='return false'>
+        <!--disabled="disabled"禁止验证码框文字被选中-->
+        <span id="gain" class="spanShift" ng-click="changeVerify()">获取</span>
+      </div>
       <a class="btn btn-primary btn-block" href="javascript;" id="login">登 录</a>
     </form>
   </div>
 </body>
 <script src="/assets/vendors/jquery/jquery.min.js"></script>
 <script>
-//给登录按钮注册事件
-$('#login').on('click',function(event){
-  //阻止默认事件
-  event.preventDefault();
-  if($('#email').val().trim() === ''){
-    return alert('请输入邮箱');
-  };
-  if($('#password').val().trim() === ''){
-    return alert('请输入密码');
-  };
-  //获取表单参数
-  let params = $('#form').serialize();
-  //提交数据到服务器
-  $.ajax({
-    url:'/loginPostData',
-    type:'POST',
-    data:params,
-    success:function(res){
-      let {status,msg} = res;
-      if(status === 200){
-        alert(msg);
-        //登录成功就跳转到首页
-        window.location='/users';
-      }else {
-        alert(msg);
-      };
-    }
+  //给登录按钮注册事件
+  $('#login').on('click', function (event) {
+    //阻止默认事件
+    event.preventDefault();
+    if ($('#email').val().trim() === '') {
+      return alert('请输入邮箱');
+    };
+    if ($('#password').val().trim() === '') {
+      return alert('请输入密码');
+    };
+    //获取表单参数
+    let params = $('#form').serialize();
+    //提交数据到服务器
+    $.ajax({
+      url: '/loginPostData',
+      type: 'POST',
+      data: params,
+      success: function (res) {
+        let { status, msg } = res;
+        if (status === 200) {
+          if (($('#js5-form3-input').val().trim()).toUpperCase() != authCode.toUpperCase()) {  
+            createCode();
+            return alert('验证码错误');
+          }
+          alert(msg);
+          //登录成功就跳转到首页
+          window.location = '/users';
+        } else {
+          alert(msg);
+        };
+      }
+    });
   });
-});
 
+  //以下是封装的获取验证码的函数
+  var authCode;
+  randomCode = $("#js5-authCode").eq(0);//获取验证码出现的方框dom
+  function createCode() {
+    authCode = "";//设置这个为空变量，然后往里面添加随机数
+    var authCodeLength = 4;//随机数的长度
+    randomArray = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'];
+    //创建一个数组，随机数从里面选择四位数或者更多
+    for (var i = 0; i < authCodeLength; i++) {
+      var index = Math.floor(Math.random() * 36);//随机取一位数
+      authCode += randomArray[index];//取四位数，并+相连
+    }
+    randomCode.val(authCode);//将四位随机数赋值给验证码出现的方框
+  }
+  createCode();
+
+  //为获取按钮注册事件
+  $('#gain').on('click',function(){
+    //刷新验证码
+    createCode();
+  });
 </script>
+
 </html>

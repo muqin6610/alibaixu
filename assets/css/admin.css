@@ -350,3 +350,27 @@ body {
   border-radius: 50%;
   box-shadow: 0 1px 5px #ccc;
 }
+.js5-input-div {
+  margin-bottom: 10px;
+}
+
+.js5-form3-input {
+  width: 140px;
+  height: 34px;
+}
+#js5-authCode {
+  width: 60px;
+  height: 34px;
+}
+
+.spanShift {
+  color:#666;
+}
+.spanShift:hover {
+  color:rgb(12, 12, 12);
+  cursor:pointer;
+}
+
+#js5-authCode {
+  text-align: center;
+}
