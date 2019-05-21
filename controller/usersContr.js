@@ -69,6 +69,13 @@ module.exports = {
         if(isXhrLogin(req,res)){
             return;
         };
+        //判断要删除的是否是正在登陆的账户,是的话就不能删除
+        if(req.query.id == req.session.user.id){
+            return res.send({
+                 status:502,
+                 msg:'您不能删除自己!'
+           });
+        };
         //接收id
         let id = req.query.id;
         //判断
@@ -79,6 +86,13 @@ module.exports = {
                     msg:'删除用户失败!'
                 });
             };
+            //判断要删除的是否是正在登陆的账户,是的话删除之后跳转到首页
+            // if(req.query.id == req.session.user.id){
+            //     return res.send({
+            //         status:501,
+            //         msg:'该账户不存在!'
+            //     });
+            // };
             res.send({
                 status: 200,
                 msg: '删除成功!'
@@ -209,7 +223,7 @@ module.exports = {
 
 //验证登录状态
 function isXhrLogin(req,res){
-    if(!req.session.user){
+    if(!req.session.user ){
         res.send({
             status:304,
             msg:'您还没有登录!'

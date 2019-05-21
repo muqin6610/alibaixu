@@ -14,7 +14,7 @@ module.exports = {
     //添加用户
     addDta:function(obj,callback){
         //执行sql语句
-        let addSql = `INSERT INTO users (slug, email, password, nickname, status) VALUES ('${obj.slug}','${obj.email}','${obj.password}','${obj.nickname}','activated')`
+        let addSql = `INSERT INTO users (slug, email, password, nickname, status,avatar) VALUES ('${obj.slug}','${obj.email}','${obj.password}','${obj.nickname}','activated','/static/uploads/avatar.jpg')`;
         db.query(addSql,(err,result) => {
             callback(err,result);
         });

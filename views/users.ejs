@@ -228,7 +228,14 @@
           } else if (status === 304) {
             alert(msg);
             window.location = '/login';
-          } else {
+          } else if (status === 502) {
+            alert(msg);
+          } 
+          // else if (status === 501) {
+          //   alert(msg);
+          //   window.location = '/login';
+          // } 
+          else {
             alert('出错了!')
           };
         }
