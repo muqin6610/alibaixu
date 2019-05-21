@@ -1,4 +1,4 @@
-//执行分类的db文件
+//执行统一的db文件
 const mysql = require('mysql');
 
 module.exports.query = (sql, callback) => {

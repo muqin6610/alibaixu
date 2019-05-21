@@ -4,7 +4,10 @@ const categorydb = require('../model/categorydb.js');
 module.exports = {
     //返回categories页面
     categories: (req, res) => {
-        res.render('categories', {});
+        //获取nickname并渲染 到页面
+        let nickname = req.session.user.nickname;
+        let avatar = req.session.user.avatar
+        res.render('categories', {nickname, avatar});
     },
     //获取所有分类数据
     getAllData: (req, res) => {

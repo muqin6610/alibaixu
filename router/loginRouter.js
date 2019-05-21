@@ -7,5 +7,7 @@ const loginContr = require('../controller/loginConr.js');
 router.get('/login',loginContr.login)
 //验证登录信息
 .post('/loginPostData',loginContr.loginPostData)
+//退出登录
+.get('/logout',loginContr.logout)
 
 module.exports = router;

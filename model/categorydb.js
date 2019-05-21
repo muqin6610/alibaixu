@@ -1,3 +1,5 @@
+//处理所有与分类相关的操作
+
 //引入db
 const db = require('./db');
 

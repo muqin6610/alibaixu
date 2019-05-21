@@ -9,6 +9,7 @@ const cookieSession = require('cookie-session');
 const usersRouter = require('./router/usersRouter.js');
 const categoryRouter = require('./router/categoryRouter.js');
 const loginRouter = require('./router/loginRouter.js'); 
+const articleRouter = require('./router/articleRouter.js');
 
 const app = express();
 
@@ -35,6 +36,7 @@ app.use('/static/uploads',express.static('./uploads'));
 app.use(loginRouter);//登录相关
 app.use(usersRouter);//用户相关
 app.use(categoryRouter);//分类相关
+app.use(articleRouter);//与文章相关
 
 app.listen(3000,() => {
     console.log('服务器开启成功!');

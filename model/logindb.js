@@ -6,7 +6,7 @@ module.exports = {
     //根据邮箱验证密码
     getDate:function(email,callback){
         //执行sql语句
-        let selSql = `SELECT password FROM users WHERE email = '${email}'`;
+        let selSql = `SELECT password,nickname,id,avatar FROM users WHERE email = '${email}'`;
         db.query(selSql,(err,result) => {
             callback(err,result);
         });

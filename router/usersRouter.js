@@ -29,6 +29,10 @@ router.get('/users',userContr.getUsers)
 .post('/updateUser', userContr.updateUser)
 // 添加一个批量删除的路由
 .post('/delUsersByIds',userContr.delUsersByIds)
+//响应个人中心
+.get('/profile',userContr.profile)
+//修改个人中心得到路由
+.post('/updateProfile',userContr.updateProfile)
 
 //暴露接口
 module.exports = router;

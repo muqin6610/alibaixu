@@ -3,4 +3,28 @@
 <script src="../assets/vendors/template/template.js"></script>
 <script>NProgress.done()</script>
 </body>
+
 </html>
+<script>
+    //给退出按钮绑定事件
+    $('#logout').click(function (event) {
+        //阻止默认事件
+        event.preventDefault();
+        if (confirm('您确定要退出吗?')) {
+            //发送异步请求
+            $.ajax({
+                url: '/logout',
+                type: 'GET',
+                success: function (res) {
+                    let { status, msg } = res;
+                    if (status === 200) {
+                        alert(msg);
+                        //跳转到login
+                        window.location = '/login';
+                    };
+                }
+            });
+        }
+    });
+
+</script>

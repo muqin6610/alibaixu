@@ -58,5 +58,20 @@ module.exports = {
         db.query(delSql,(err,result) => {
             callback(err,result);
         });
+    },
+    //响应个人中心
+    getByIdUser:function(id,callback){
+        //执行sql语句
+        let selSql = `SELECT * FROM users WHERE id = ${id}`;
+        db.query(selSql,(err,result) => {
+            callback(err,result);
+        });
+    },
+    updateMsgId:(obj,callback) => {
+        //执行sql语句
+        let updateSql = `UPDATE users SET slug = '${obj.slug}', nickname = '${obj.nickname}', avatar = '${obj.img}', bio = '${obj.bio}' WHERE id = ${obj.id}`;
+        db.query(updateSql,(err,result) => {
+            callback(err,result);
+        });
     }
 };

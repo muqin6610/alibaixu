@@ -1,5 +1,7 @@
 //引入userdb
 const userdb = require('../model/userdb.js');
+const formidable = require('formidable');
+const path = require('path');
 
 //处理和用户相关的逻辑
 
@@ -15,7 +17,9 @@ module.exports = {
                 return res.send('<script>alert("' + err.message + '");</script>');
             }
             //渲染页面
-            res.render('users', { result: result });
+            let nickname = req.session.user.nickname;
+            let avatar = req.session.user.avatar;
+            res.render('users', { result,nickname,avatar });
         });
     },
     //添加用户数据
@@ -147,6 +151,58 @@ module.exports = {
                 status:200,
                 msg:'删除成功!'
             });
+        });
+    },
+    //响应个人中心
+    profile:(req,res) => {
+        //获取ID
+        let id = req.session.user.id;
+        //根据 id获取对应的数据
+        userdb.getByIdUser(id,(err,result) => {
+            if(err) {
+                return res.send('<script>alert("出错啦!");window.location="/users";</script>')
+            };
+            res.render('profile',result[0]);
+        });
+    },
+    //修改个人中心
+    updateProfile:(req,res) => {
+        //接受参数
+        let form = new formidable.IncomingForm();
+        //修改图片 上传后的保存路径
+        let imgPath = path.join(__dirname,'../uploads');
+        form.uploadDir = imgPath;
+        //保留图片后缀
+        form.keepExtensions = true;
+        //判断
+        form.parse(req,(err,fields,files) => {
+            if(err){
+                return res.send({
+                    status:400,
+                    msg:'出错了!'
+                });
+            };
+            //判断 路径是否存在
+            if(files.img){
+                let name = path.basename(files.img.path);
+                fields.img = '/static/uploads/'+name;
+            };
+            //修改信息后需要更新session
+            req.session.user.nickname = fields.nickname;
+            req.session.user.avatar = fields.img;
+            //将参数提交到数据库
+            userdb.updateMsgId(fields,(err1,result) => {
+                if(err1){
+                    return res.send({
+                        status:400,
+                        msg:'出错了!'
+                    });
+                };
+                res.send({
+                    status:200,
+                    msg:'信息更新成功!'
+                });
+            })
         });
     }
 };

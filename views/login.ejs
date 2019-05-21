@@ -28,7 +28,8 @@
         <span class="js5-input-divSpan">验证码：</span>
         <input type="text" placeholder="不区分大小写" class="js5-form3-input" id="js5-form3-input" ng-model="writeCode"
           maxlength="6" ng-keyup="mykey($event)">
-        <input type="text" class="js5-authCode" value="" id="js5-authCode" ng-model="showAuthCode" disabled="disabled" oncopy='return false' oncontextmenu='return false'>
+        <input type="text" class="js5-authCode" value="" id="js5-authCode" ng-model="showAuthCode" disabled="disabled"
+          oncopy='return false' oncontextmenu='return false'>
         <!--disabled="disabled"禁止验证码框文字被选中-->
         <span id="gain" class="spanShift" ng-click="changeVerify()">获取</span>
       </div>
@@ -43,9 +44,13 @@
     //阻止默认事件
     event.preventDefault();
     if ($('#email').val().trim() === '') {
+      //刷新验证码
+      createCode();
       return alert('请输入邮箱');
     };
     if ($('#password').val().trim() === '') {
+      //刷新验证码
+      createCode();
       return alert('请输入密码');
     };
     //获取表单参数
@@ -58,7 +63,8 @@
       success: function (res) {
         let { status, msg } = res;
         if (status === 200) {
-          if (($('#js5-form3-input').val().trim()).toUpperCase() != authCode.toUpperCase()) {  
+          if (($('#js5-form3-input').val().trim()).toUpperCase() != authCode.toUpperCase()) {
+            //刷新验证码
             createCode();
             return alert('验证码错误');
           }
@@ -66,6 +72,8 @@
           //登录成功就跳转到首页
           window.location = '/users';
         } else {
+          //刷新验证码
+          createCode();
           alert(msg);
         };
       }
@@ -89,7 +97,7 @@
   createCode();
 
   //为获取按钮注册事件
-  $('#gain').on('click',function(){
+  $('#gain').on('click', function () {
     //刷新验证码
     createCode();
   });

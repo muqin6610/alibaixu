@@ -34,12 +34,25 @@ module.exports = {
             //登录成功将用户信息保存起来
             req.session.user = {
                 email:params.email,
-                password:params.password  
+                password:params.password,  
+                nickname:result[0].nickname,
+                id:result[0].id,
+                avatar:result[0].avatar
             }
             res.send({
                 status:200,
                 msg:'登录成功!'
             });
+        });
+    },
+    //退出登录
+    logout:(req,res) => {
+        //清除服务器session
+        req.session.user = null;
+        //响应信息回浏览器
+        res.send({
+            status:200,
+            msg:'已退出登录'
         });
     }
 };
