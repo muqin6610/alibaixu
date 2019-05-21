@@ -33,6 +33,10 @@ router.get('/users',userContr.getUsers)
 .get('/profile',userContr.profile)
 //修改个人中心得到路由
 .post('/updateProfile',userContr.updateProfile)
+//响应修改密码页面
+.get('/passwordreset',userContr.passwordreset)
+//修改密码
+.post('/setPassword',userContr.setPassword)
 
 //暴露接口
 module.exports = router;

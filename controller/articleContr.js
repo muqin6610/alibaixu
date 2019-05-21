@@ -56,5 +56,12 @@ module.exports = {
                 });
             });
         });
+    },
+       //返回posts页面
+       posts: (req, res) => {
+        //获取nickname和avatar并渲染 到页面
+        let nickname = req.session.user.nickname;
+        let avatar = req.session.user.avatar;
+        res.render('posts', { nickname, avatar });
     }
 };

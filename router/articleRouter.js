@@ -7,6 +7,8 @@ const router = express.Router();
 router.get('/postAdd',articleContr.postAdd)
 //新增文章
 .post('/postSave',articleContr.postSave)
+//响应所有文章页面
+.get('/posts',articleContr.posts)
 
 //暴露
 module.exports = router;
