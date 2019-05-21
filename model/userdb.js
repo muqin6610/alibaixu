@@ -67,6 +67,7 @@ module.exports = {
             callback(err,result);
         });
     },
+    //更新个人 中心
     updateMsgId:(obj,callback) => {
         //执行sql语句
         let updateSql = `UPDATE users SET slug = '${obj.slug}', nickname = '${obj.nickname}', avatar = '${obj.img}', bio = '${obj.bio}' WHERE id = ${obj.id}`;

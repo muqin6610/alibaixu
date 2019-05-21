@@ -81,7 +81,7 @@
   };
   getSelect();
 
-  //给上传框注册一个chang事件
+  //给上传框注册一个change事件
   $('#feature').change(function () {
     //得到图片
     let imgObj = $('#feature')[0].files[0];
@@ -96,7 +96,7 @@
     // 阻止默认行为
     event.preventDefault()
     // 拼接数据 使用 formData 来拼接
-    let fd = new FormData();
+    var fd = new FormData();
     // 添加参数
     fd.append('title', $('#title').val())
     fd.append('content', $('#content').val())
@@ -107,7 +107,7 @@
     fd.append('status', $('#status').val())
     //使用异步请求提交
     $.ajax({
-      url: '/postsave',
+      url: '/postSave',
       type: 'POST',
       data: fd,
       processData: false,
