@@ -9,6 +9,8 @@ router.get('/postAdd',articleContr.postAdd)
 .post('/postSave',articleContr.postSave)
 //响应所有文章页面
 .get('/posts',articleContr.posts)
+//获取所有文章信息
+.get('/getPostsData',articleContr.getPostsData)
 
 //暴露
 module.exports = router;

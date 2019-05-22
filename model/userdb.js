@@ -75,18 +75,18 @@ module.exports = {
             callback(err, result);
         });
     },
-    //响应修改密码页面
-    setPassword: function (id, callback) {
+    //根据id获取密码
+    getPwdById:function(id,callback){
         //执行sql语句
-        let selSql = `SELECT * FROM users WHERE id = ${id}`;
-        db.query(selSql, (err, result) => {
-            callback(err, result);
+        let sql = `SELECT password FROM users WHERE id = ${id}`;
+        db.query(sql,(err,result) => {
+            callback(err,result);
         });
     },
     //修改密码
-    selPassword:function(params,callback){
+    selPassword:function(id,newpwd,callback){
         //执行sql语句
-        let updatePass = `UPDATE users SET password = ${params.password}  WHERE id = ${params.id}`;
+        let updatePass = `UPDATE users SET password = '${newpwd}'  WHERE id = ${id}`;
         db.query(updatePass,(err,result) => {
             callback(err,result);
         });

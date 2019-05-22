@@ -12,5 +12,13 @@ module.exports = {
         db.query(sql, (err, result) => {
             callback(err, result);
         });
+    },
+    //获取所有文章信息
+    getPostsData:(callback) => {
+        //执行sql语句
+        let selSql =  `SELECT * FROM posts`;
+        db.query(selSql,(err,result) => {
+            callback(err,result);
+        });
     }
 };

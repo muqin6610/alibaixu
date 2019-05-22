@@ -221,44 +221,42 @@ module.exports = {
     },
     //响应修改密码页面
     passwordreset: (req, res) => {
-        //获取ID
-        let id = req.session.user.id;
-        //根据id获取对应的数据
-        userdb.setPassword(id, (err, result) => {
-            if (err) {
-                return res.send('<script>alert("出错啦!");window.location="/profile";</script>');
-            };
-            res.render('passwordreset', result[0]);
-        });
+        //获取数据
+        let nickname = req.session.user.nickname;
+        let avatar = req.session.user.avatar;
+        //响应
+        res.render('passwordreset', { nickname, avatar });
     },
     //修改密码
     setPassword: (req, res) => {
         //获取参数
         let params = req.body;
-        params.id = req.session.user.id;
-        let old = params.old - 0;
-        let password = req.session.user.password - 0;
         //判断旧密码是否正确
-        if (old != password) {
-            return res.send({
-                status: 400,
-                msg: '旧密码输入不正确,请重新输入!'
-            });
-        };
-        //判断
-        userdb.selPassword(params, (err, result) => {
-            if (err) {
+        let id = req.session.user.id;
+        userdb.getPwdById(id, (errr, result) => {
+            //验证
+            if (req.body.old === result[0].password) {
+                //将新密码存入数据库
+                userdb.selPassword(id, req.body.password, (err, result) => {
+                    if (err) {
+                        res.send({
+                            status: 400,
+                            msg: '密码修改出错!'
+                        });
+                    };
+                    //密码修改成功清空session
+                    req.session.user = null;
+                    res.send({
+                        status: 200,
+                        msg: '密码修改成功!请重新登录!'
+                    });
+                });
+            }else {
                 res.send({
-                    status: 400,
-                    msg: '密码修改出错!'
+                    status:300,
+                    msg:'旧密码验证失败,请重新输入!'
                 });
             };
-            //密码修改成功清空session
-            req.session.user = null;
-            res.send({
-                status: 200,
-                msg: '密码修改成功!请重新登录!'
-            });
         });
     }
 };

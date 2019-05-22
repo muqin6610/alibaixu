@@ -16,6 +16,10 @@ module.exports = {
     postSave: (req, res) => {
         //接收参数
         let form = new formidable.IncomingForm();
+        //将图片保存到uploads
+        form.uploadDir = path.join(__dirname,'../uploads');
+        //保留图片后缀
+        form.keepExtensions = true;
         //判断
         form.parse(req, (err, fields, files) => {
             if (err) {
@@ -63,5 +67,22 @@ module.exports = {
         let nickname = req.session.user.nickname;
         let avatar = req.session.user.avatar;
         res.render('posts', { nickname, avatar });
+    },
+    //获取所有文章信息
+    getPostsData:(req,res) => {
+        //判断
+        articledb.getPostsData((err,result) => {
+            if(err) {
+                res.send({
+                    status:400,
+                    msg:'出错了!'
+                });
+            };
+            res.send({
+                status:200,
+                msg:'查询成功!',
+                params:result
+            });
+        });
     }
 };
