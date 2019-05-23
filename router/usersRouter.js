@@ -1,4 +1,4 @@
-//所有的路由
+//所有与用户相关的路由
 
 //引入模块和文件
 const express = require('express');

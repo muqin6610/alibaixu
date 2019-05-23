@@ -157,5 +157,59 @@ module.exports = {
                 data:result
             });
         });
+    },
+    //响应文章编辑页面
+    postEdit:(req,res) => {
+        //获取参数并响应
+        let nickname = req.session.user.nickname;
+        let avatar = req.session.user.avatar;
+        res.render('postEdit',{ nickname,avatar});
+    },
+    //根据id获取对应的文章数据
+    getPostById:(req,res) => {
+        //接受参数
+        let id = req.query.id;
+        //获取数据
+        articledb.getPostById(id,(err,result) => {
+            if(err) {
+                res.send({
+                    status:400,
+                    msg:'出错了!'
+                });
+            };
+            res.send({
+                status:200,
+                msg:'获取数据成功!',
+                data:result
+            });
+        });
+    },
+    //修改文章
+    updatePost:(req,res) => {
+        //接收参数
+        let form = new formidable.IncomingForm();
+        //设置保存路径
+        form.uploadDir = path.join(__dirname,'../uploads');
+        //保留后缀
+        form.keepExtensions = true;
+        form.parse(req,(err,fields,files) => {
+            //如果上传了图片需要得到图片路径
+            if(files.feature){
+                fields.feature = '/static/uploads/' + path.basename(files.feature.path);
+            };
+            //将对象更新到数据库
+            articledb.updatePost(fields,(err,result) => {
+                if(err) {
+                    return res.send({
+                        status:400,
+                        msg:"出错了!"
+                    });
+                };
+                res.send({
+                    status:200,
+                    msg:'文章修改成功!'
+                });
+            });
+        });
     }
 };

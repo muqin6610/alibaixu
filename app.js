@@ -10,6 +10,7 @@ const usersRouter = require('./router/usersRouter.js');
 const categoryRouter = require('./router/categoryRouter.js');
 const loginRouter = require('./router/loginRouter.js'); 
 const articleRouter = require('./router/articleRouter.js');
+const setRouter = require('./router/setRouter.js')
 
 const app = express();
 
@@ -31,12 +32,14 @@ app.use(cookieSession({
 //配置静态文件
 app.use('/assets',express.static('./assets'));
 app.use('/static/uploads',express.static('./uploads'));
+app.use('/public',express.static('./public'));
 
 //注册中间件
 app.use(loginRouter);//登录相关
 app.use(usersRouter);//用户相关
 app.use(categoryRouter);//分类相关
 app.use(articleRouter);//与文章相关
+app.use(setRouter);//与设置相关
 
 app.listen(3000,() => {
     console.log('服务器开启成功!');

@@ -19,6 +19,12 @@ router.get('/postAdd',articleContr.postAdd)
 .get('/index',articleContr.index)
 //获取统计数据
 .get('/getIndexData',articleContr.getIndexData)
+// 得到编辑文章静态文件
+.get('/postEdit', articleContr.postEdit ) 
+//根据id获取文章数据
+.get('/getPostById',articleContr.getPostById)
+//修改文章
+.post('/updatePost',articleContr.updatePost)
 
 //暴露
 module.exports = router;

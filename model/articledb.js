@@ -71,5 +71,21 @@ module.exports = {
         db.query( selSql,(err,result) => {
             callback(err,result);
         });
+    },
+    //通过id获取对应的文章信息
+    getPostById:(id,callback) => {
+        //执行sql语句
+        let sql = `SELECT * FROM posts WHERE id = ${id};SELECT * FROM categories`;
+        db.query(sql,(err,result) => {
+            callback(err,result);
+        });
+    },
+    //修改文章
+    updatePost:(obj,callback) => {
+        //执行sql语句
+        let sql = `UPDATE posts SET title='${obj.title}', content='${obj.content}', slug='${obj.slug}', category_id=${obj.category},created='${obj.created}', status='${obj.status}', feature='${obj.feature}' WHERE id = ${obj.id}`;
+        db.query(sql, (err, result) => { 
+            callback(err, result);
+        })
     }
 };
