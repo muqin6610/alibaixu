@@ -1,7 +1,7 @@
 //与登录相关的所有路由
 const express = require('express');
 const router = express.Router();
-const loginContr = require('../controller/loginConr.js');
+const loginContr = require('../controller/loginContr.js');
 
 //获取登录页面
 router.get('/login',loginContr.login)

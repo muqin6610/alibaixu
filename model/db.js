@@ -7,7 +7,8 @@ module.exports.query = (sql, callback) => {
         host: 'localhost',
         user: 'root',
         password: 'root',
-        database: 'baixiu'
+        database: 'baixiu',
+        multipleStatements:true
     });
     // 用户链接
     connection.connect();

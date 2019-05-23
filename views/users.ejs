@@ -308,7 +308,6 @@
 
   //使用事件委托给多选框绑定点击事件
   $('#tbody').on('click', '.boxitem', function () {
-    //如果同时存在两个以上的多选框被选中,显示批量删除
     //得到表格的所有选框
     let selCount = 0;
     $('.boxitem').each((key, ele) => {
@@ -317,6 +316,7 @@
         selCount++;
       };
     });
+     //如果同时存在两个以上的多选框被选中,显示批量删除
     selCount >= 2 ? $('#delAll').show() : $('#delAll').hide();
     //如果所有的选择框被选中,表头中的选框也要被选中
     let totalCount = $('.boxitem').length;
