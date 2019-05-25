@@ -180,7 +180,7 @@
   //使用事件委托给多选框注册事件
   $('#posts_tbody').on('click', '.selBox', function () {
     //如果有两个以上的选框被选中就显示批量删除
-    //得到表格所有的悬==选框
+    //得到表格所有的多选框
     let selCount = 0;
     $('.selBox').each((key, ele) => {
       let result = $(ele).prop('checked');

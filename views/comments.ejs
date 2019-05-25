@@ -1,0 +1,125 @@
+<% include layout/header %>
+
+<div class="main">
+  <% include layout/nav %>
+  <div class="container-fluid">
+    <div class="page-title">
+      <h1>所有评论</h1>
+    </div>
+    <!-- 有错误信息时展示 -->
+    <!-- <div class="alert alert-danger">
+        <strong>错误！</strong>发生XXX错误
+      </div> -->
+    <div class="page-action">
+      <!-- show when multiple checked -->
+      <div class="btn-batch" style="display: none">
+        <button class="btn btn-info btn-sm">批量批准</button>
+        <button class="btn btn-warning btn-sm">批量拒绝</button>
+        <button class="btn btn-danger btn-sm">批量删除</button>
+      </div>
+      <ul id="pagination" class="pagination pagination-sm pull-right">
+
+      </ul>
+    </div>
+    <table class="table table-striped table-bordered table-hover">
+      <thead>
+        <tr>
+          <th class="text-center" width="40"><input type="checkbox"></th>
+          <th>作者</th>
+          <th>评论</th>
+          <th>评论在</th>
+          <th>提交于</th>
+          <th>状态</th>
+          <th class="text-center" width="100">操作</th>
+        </tr>
+      </thead>
+      <tbody id="tbody">
+
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<% include layout/aside %>
+<% include layout/footer %>
+<script src="/assets/vendors/twbs-pagination/jquery.twbsPagination.js"></script>
+<script id="tmp" type="text/html">
+  {{ each data }}
+  <tr class={{ $value.status === 'approved' ? "danger" : "" }} >
+    <td class="text-center"><input type="checkbox"></td>
+    <td>{{ $value.author}}</td>
+    <td>{{ $value.content}}</td>
+    <td>《Hello world》</td>
+    <td>{{ $value.created}}</td>
+    <td>{{ $value.status === 'approved' ? '未批准' : '批准' }}</td>
+    <td class="text-center">
+      <a href="post-add.html" class="btn btn-info btn-xs">{{ $value.status === 'approved' ? '批准' : '驳回' }}</a>
+      <a href="javascript:;" class="btn btn-danger btn-xs" id="{{ $value.id }}">删除</a>
+    </td>
+  </tr>
+  {{ /each }}
+  </script>
+<script>
+  //打开页面动态获取评论数据
+  //定义一个pagesize
+  var pagesize = 8;
+  function getComments(page, pagesize) {
+    //发送异步请求
+    $.ajax({
+      url: `/getComments?page=${page}&pagesize=${pagesize}`,
+      type: 'GET',
+      success: function (res) {
+        let { status, msg } = res;
+        if (status === 200) {
+          let html = template('tmp', res);
+          $('tbody').html(html);
+        } else {
+          alert(msg);
+        };
+      }
+    });
+  };
+  //调用方法
+  getComments(1, pagesize);
+
+  //初始化分页插件
+  function initPage(total, pagesize) {
+    $('#pagination').twbsPagination({
+      totalPages: Math.ceil(total / pagesize), // 总页数
+      visiblePages: 5, // 可见页数
+      hideOnlyOnePage: true, // 只有一页时隐藏
+      first: '首页', // 第一页显示的文本
+      last: '尾页', // 最后页显示的文本
+      prev: '上一页', // 上一页
+      next: '下一页', // 下一页
+      onPageClick: function (event, page) { // 点击分页元素时触发事件
+        // page 就是当前页数
+        getComments(page, pagesize);
+        $('#selAll').prop('checked', false);
+        $('#delAll').hide();
+      }
+    });
+  };
+
+  //使用事件委托给删除按钮初注册事件
+  $('#tbody').on('click', '.btn-danger', function () {
+    if (confirm('您确定哟删除吗?')) {
+      //获取当前要删除的数据id
+      let id = $(this).attr('id');
+      //发送异步请求
+      $.ajax({
+        url: '/delComment',
+        type: 'GET',
+        data: 'id=' + id,
+        success: function (res) {
+          let { status, msg } = res;
+          if (status === 200) {
+            alert(msg);
+          } else {
+            alert(msg);
+          };
+        }
+      });
+    };
+  });
+</script>

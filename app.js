@@ -11,6 +11,7 @@ const categoryRouter = require('./router/categoryRouter.js');
 const loginRouter = require('./router/loginRouter.js'); 
 const articleRouter = require('./router/articleRouter.js');
 const setRouter = require('./router/setRouter.js')
+const commentsRouter = require('./router/commentsRouter.js');
 
 const app = express();
 
@@ -40,6 +41,7 @@ app.use(usersRouter);//用户相关
 app.use(categoryRouter);//分类相关
 app.use(articleRouter);//与文章相关
 app.use(setRouter);//与设置相关
+app.use(commentsRouter);//与评论相关
 
 app.listen(3000,() => {
     console.log('服务器开启成功!');
